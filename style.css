@@ -229,7 +229,7 @@ p { color: var(--text-secondary); margin-bottom: 1rem; }
 }
 
 .image-wrapper {
-    width: 600px;
+    width: 500px;
     max-width: 100%;
     display: flex;
     align-items: center;
