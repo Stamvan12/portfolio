@@ -47,23 +47,67 @@ document.addEventListener('DOMContentLoaded', () => {
     const nextBtn = document.querySelector('.next-btn');
 
     if (carouselContainer && prevBtn && nextBtn) {
-        nextBtn.addEventListener('click', () => {
-            const cardWidth = carouselContainer.querySelector('.project-card').offsetWidth;
-            const gap = 32; // 2rem gap
-            carouselContainer.scrollBy({
-                left: cardWidth + gap,
-                behavior: 'smooth'
-            });
-        });
+        const getScrollDistance = () => {
+            const referenceCard = carouselContainer.querySelector('.project-card');
+            if (!referenceCard) return 0;
+            const gap = 32; // matches CSS gap (2rem)
+            return referenceCard.offsetWidth + gap;
+        };
 
-        prevBtn.addEventListener('click', () => {
-            const cardWidth = carouselContainer.querySelector('.project-card').offsetWidth;
-            const gap = 32; // 2rem gap
+        const scrollByStep = (direction) => {
+            const distance = getScrollDistance();
+            if (!distance) return;
             carouselContainer.scrollBy({
-                left: -(cardWidth + gap),
+                left: direction * distance,
                 behavior: 'smooth'
             });
-        });
+        };
+
+        nextBtn.addEventListener('click', () => scrollByStep(1));
+        prevBtn.addEventListener('click', () => scrollByStep(-1));
+
+        // Enable swipe gestures on touch devices
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let touchCurrentX = 0;
+        let touchCurrentY = 0;
+        let isSwiping = false;
+        const swipeThreshold = 60;
+
+        const onTouchStart = (event) => {
+            const touch = event.touches[0];
+            touchStartX = touch.clientX;
+            touchStartY = touch.clientY;
+            touchCurrentX = touchStartX;
+            touchCurrentY = touchStartY;
+            isSwiping = true;
+        };
+
+        const onTouchMove = (event) => {
+            if (!isSwiping) return;
+            const touch = event.touches[0];
+            touchCurrentX = touch.clientX;
+            touchCurrentY = touch.clientY;
+        };
+
+        const onTouchEnd = () => {
+            if (!isSwiping) return;
+            const deltaX = touchCurrentX - touchStartX;
+            const deltaY = touchCurrentY - touchStartY;
+            const absDeltaX = Math.abs(deltaX);
+            const absDeltaY = Math.abs(deltaY);
+
+            if (absDeltaX > swipeThreshold && absDeltaX > absDeltaY) {
+                scrollByStep(deltaX < 0 ? 1 : -1);
+            }
+
+            isSwiping = false;
+        };
+
+        carouselContainer.addEventListener('touchstart', onTouchStart, { passive: true });
+        carouselContainer.addEventListener('touchmove', onTouchMove, { passive: true });
+        carouselContainer.addEventListener('touchend', onTouchEnd);
+        carouselContainer.addEventListener('touchcancel', onTouchEnd);
     }
 
     // --- Project Modal Preview ---
