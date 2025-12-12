@@ -24,6 +24,12 @@
 
 html {
     scroll-behavior: smooth;
+    scrollbar-width: none;
+}
+
+html::-webkit-scrollbar {
+    width: 0;
+    height: 0;
 }
 
 body {
@@ -32,6 +38,13 @@ body {
     font-family: var(--font-body);
     line-height: 1.6;
     overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+body::-webkit-scrollbar {
+    width: 0;
+    height: 0;
 }
 
 /* Background Gradients */
@@ -81,6 +94,7 @@ p { color: var(--text-secondary); margin-bottom: 1rem; }
 
 .highlight {
     background: linear-gradient(120deg, #60a5fa, #a78bfa);
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
