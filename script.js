@@ -23,20 +23,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Mobile Menu ---
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
     const closeMenuBtn = document.querySelector('.close-menu-btn');
-    const mobileMenuOverlay = document.querySelector('.mobile-menu-overlay');
+    const mobileMenuPanel = document.querySelector('.mobile-menu-panel');
     const mobileLinks = document.querySelectorAll('.mobile-nav-links a');
 
-    const toggleMenu = () => {
-        mobileMenuOverlay.classList.toggle('active');
-        document.body.style.overflow = mobileMenuOverlay.classList.contains('active') ? 'hidden' : 'auto';
-    };
+    if (mobileMenuBtn && closeMenuBtn && mobileMenuPanel) {
+        const toggleMenu = () => {
+            mobileMenuPanel.classList.toggle('active');
+            document.body.style.overflow = mobileMenuPanel.classList.contains('active') ? 'hidden' : 'auto';
+        };
 
-    mobileMenuBtn.addEventListener('click', toggleMenu);
-    closeMenuBtn.addEventListener('click', toggleMenu);
+        mobileMenuBtn.addEventListener('click', toggleMenu);
+        closeMenuBtn.addEventListener('click', toggleMenu);
 
-    mobileLinks.forEach(link => {
-        link.addEventListener('click', toggleMenu);
-    });
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', toggleMenu);
+        });
+    }
 
 
     // --- Carousel Logic ---
